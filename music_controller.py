@@ -42,7 +42,7 @@ class MusicController():
         # notes: 音程と長さのリスト[["A4", 8], ["A4", 8]]
 
         # 曲番号，音符の個数
-        bytes = [song_num, len(notes)]
+        bytes = [create2.opcode.CREATE_OPCODES['song'], song_num, len(notes)]
 
         # 音程データを変換
         for note in notes:
@@ -50,11 +50,12 @@ class MusicController():
             bytes.extend([create2.opcode.MIDI_TABLE[freq], length])
 
         # send to create2
-        self.create.opcode.song(bytes)
-        
+        self.create.sci.send(bytes)
+
         return
 
     #--------------------------------------------------
     def PlaySong(self, song_num=0):
-        self.create.opcode.play(song_num)
+        bytes = [create2.opcode.CREATE_OPCODES['play'], song_num]
+        self.create.sci.send(bytes)
         return
